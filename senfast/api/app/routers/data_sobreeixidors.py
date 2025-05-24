@@ -9,12 +9,19 @@ import oracledb
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
+import time
+
 from senfast.core.config import get_settings
 from senfast.api.app.db.querys.read_query_sobreeixidors import read_query_sobreeixidors
 from senfast.core.monitoring import logger
+from senfast.core.metrics import REQUEST_COUNT, REQUEST_LATENCY
+
 from senfast.api.app.db.models.models_sobreeixidors import DataSobreeixidor
 from senfast.api.app.db.database import get_db_cursor, validate_table_name, get_connection_pool
 from senfast.core.exceptions import TableNotFoundError, GeometryColumnNotFoundError, DatabaseQueryError
+from senfast.api.app.utils.kml_utils import create_kml_document
+from senfast.api.app.utils.error_utils import standard_http_exception
+from senfast.api.app.repositories.sobreeixidors_repository import SobreeixidorsRepository
 
 # from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, REGISTRY
 # from prometheus_client import Counter, Gauge
@@ -34,24 +41,22 @@ router = APIRouter(prefix="sobreeixidors", tags=["Dades Sobreeixidors"])
 class SobreeixidorsService:
     def __init__(self, db_pool):
         # self.db_pool = db_pool
+        pass
+    
+    @staticmethod
+    def get_all_sobreeixidors(page: int, per_page: int) -> List[DataSobreeixidor]:
+        return SobreeixidorsRepository.get_all(page, per_page)
 
     @staticmethod
-    def get_all_sobreeixidors(self, page: int, per_page: int) -> List[DataSobreeixidor]:
-        offset = (page - 1) * per_page
-        with get_db_cursor() as cursor:
-            logger.debug(f"Ejecutando consulta: {read_query_sobreeixidors.READ_ALL_SOBREEIXIDORS}")
-            cursor.execute(read_query_sobreeixidors.READ_ALL_SOBREEIXIDORS)
-            columns = [col[0] for col in cursor.description]
-            records = cursor.fetchall()
-            if not records:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se encontraron sobreeixidors")
-            # return {"data": records, "count": len(records)}
-            return [DataSobreeixidor(**dict(zip(columns, row))) for row in records]
-
+    def validate_token(token: str) -> bool:
+        # Implementación real de validación del token
+        # Por ejemplo, comprobar contra base de datos, JWT, etc.
+        return token == "valor_valido"  # Sustituir por la lógica real
+    
     @staticmethod
     def create_kml_document(sobreeixidors: List[DataSobreeixidor]) -> str:
         """Crea el documento KML con los datos de sobreeixidors"""
-        
+        return create_kml_document(sobreeixidors)
         # Configuración de íconos
         settings.add(PATH_ICONES_SOBREEIXIDORS: str = Field(
             default=os.path.join(os.getcwd(), "senfast", "static", "icons_sobreeixidors"),
@@ -183,14 +188,12 @@ async def kml_sobreeixidors(token: str, file: Optional[str] = None):
     - file: Nombre del archivo (opcional)
     """
     
-    # # Validar token
-    # if not SobreeixidorsService.validate_token(token):
-    #     # Retornar XML vacío si el token no es válido
-    #     return XMLResponse(content="<?xml version='1.0' encoding='utf-8'?><kml></kml>")
-    
+    if not SobreeixidorsService.validate_token(token):
+        logger.warning("Token inválido en acceso a /sobreeixidors/kml")
+        return XMLResponse(content="<?xml version='1.0' encoding='utf-8'?><kml></kml>", status_code=401)
     try:
         # Obtener datos de sobreeixidors
-        sobreeixidors = SobreeixidorsService.get_all_sobreeixidors()
+        sobreeixidors = SobreeixidorsService.get_all_sobreeixidors(page=1, per_page=1000)
         
         # Generar KML
         kml_content = SobreeixidorsService.create_kml_document(sobreeixidors)
@@ -204,8 +207,8 @@ async def kml_sobreeixidors(token: str, file: Optional[str] = None):
         return XMLResponse(content=kml_content, headers=headers)
         
     except Exception as e:
-        logger.error(f"Error generando KML: {e}")
-        raise HTTPException(status_code=500, detail="Error generating KML")
+        logger.error(f"Error inesperado: {str(e)}", exc_info=True)
+        raise standard_http_exception("Error interno del servidor")
     
 @router.get(
     "/all_sobreeixidors",
@@ -214,6 +217,10 @@ async def kml_sobreeixidors(token: str, file: Optional[str] = None):
     description="""
     Devuelve una lista completa de todos los sobreeixidors en formato JSON.
 
+    - Parámetros:
+        - page: página de la consulta (>=1)
+        - per_page: elementos por página (1-1000)
+
     Ejemplo de uso:
 
     * Obtener todos los sobreeixidors: `/all_sobreeixidors`
@@ -221,14 +228,17 @@ async def kml_sobreeixidors(token: str, file: Optional[str] = None):
 )
 async def read_sobreexidors(
     request: Request,
-    page: int = Query(1, ge=1),
-    per_page: int = Query(100, ge=1, le=1000)
+    page: int = Query(1, ge=1, description="Página (>=1)"),
+    per_page: int = Query(100, ge=1, le=1000, description="Elementos por página (1-1000)")
     ):
     """Endpoint para obtener datos de sobreeixidors en formato JSON."""
     logger.critical("RUTA /all_sobreeixidors INICIADA")  # Log CRITICAL
+    start = time.time()
     try:
         logger.info(f"Request ID: {request.state.request_id} - Solicitud recibida para obtener todos los sobreeixidors")
-        sobreeixidors  = SobreeixidorsService.get_all_sobreeixidors()
+        sobreeixidors = SobreeixidorsService.get_all_sobreeixidors(page, per_page)
+        REQUEST_COUNT.labels(endpoint="/all_sobreeixidors", method="GET", status_code=200).inc()
+        REQUEST_LATENCY.labels(endpoint="/all_sobreeixidors", method="GET").observe(time.time() - start)
         return sobreeixidors
         
     except DatabaseQueryError as e: 
@@ -238,11 +248,9 @@ async def read_sobreexidors(
         logger.error(f"Request ID: {request.state.request_id} - Error de base de datos: {str(e)}", exc_info=True)
         raise DatabaseQueryError(detail=str(e))      
     except Exception as e:
-        logger.error(f"Request ID: {request.state.request_id} - Error inesperado: {str(e)}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Error interno del servidor"
-        )
+        logger.error(f"Error inesperado: {str(e)}", exc_info=True)
+        REQUEST_COUNT.labels(endpoint="/all_sobreeixidors", method="GET", status_code=500).inc()
+        raise standard_http_exception("Error interno del servidor")
 
 
 
