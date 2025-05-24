@@ -1,0 +1,21 @@
+# Web framework y ASGI server
+fastapi==0.110.0
+gunicorn>=21.2.0
+uvicorn>=0.23.2
+# Base de datos Oracle
+oracledb==3.1.1
+
+# Validación de datos y configuración
+pydantic==2.6.1
+pydantic-settings==2.2.1
+geojson-pydantic==1.0.1
+
+# Utilidades
+python-dotenv==1.0.1
+logging-plus==1.2.0
+tenacity==8.2.3
+psutil==7.0.0
+
+# Monitorización
+prometheus-client>=0.12.0,<0.13.0
+starlette-prometheus==0.9.0
