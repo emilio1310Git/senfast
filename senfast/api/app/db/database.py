@@ -48,7 +48,8 @@ def create_connection_pool(retries: int = 3, delay: float = 1.0) -> oracledb.Con
                 dsn=dsn,
                 # application_name=settings.APP_NAME,
                 # connect_timeout=settings.DB_CONNECT_TIMEOUT,
-                increment = 1
+                increment = 1,
+                encoding="UTF-8",
             )
             logger.info("Pool de conexiones creado exitosamente")
             # Inicializar métricas del pool
