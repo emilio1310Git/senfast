@@ -10,7 +10,7 @@ from senfast.api.app.db import database
 from senfast.core.monitoring import setup_logging, add_request_id
 from senfast.core.config import get_settings
 # from senfast.core.routes import router
-from senfast.api.app.routers import health, docs, info, metrics_route, data_barris, data_sobreeixidors
+from senfast.api.app.routers import health, docs, info, metrics_route, data_sobreeixidors, data_taigua
 from senfast.core.metrics import setup_metrics
 from fastapi import Request, HTTPException
 
@@ -23,6 +23,8 @@ async def lifespan(app: FastAPI):
         print("Pool de conexiones creado OK")
     except Exception as e:
         print(f"Error al crear el pool de conexiones: {e}")
+        # Lanzar excepción para evitar que la app arranque sin pool
+        raise RuntimeError("No se pudo crear el pool de conexiones, la aplicación no puede arrancar.") from e
     yield
     # Shutdown
     if database.POOL:
@@ -138,7 +140,7 @@ def get_application() -> FastAPI:
     _app.include_router(docs.router)
     _app.include_router(info.router)
     _app.include_router(metrics_route.router)
-    _app.include_router(data_barris.router)
+    _app.include_router(data_taigua.router)
     _app.include_router(data_sobreeixidors.router)
     # _app.include_router(router)
     # for router in [health.router, metrics.router, docs.router, info.router, data_barris.router]:

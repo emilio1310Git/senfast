@@ -1,6 +1,6 @@
 # Modelos
 from pydantic import BaseModel
-from typing import Literal
+from typing import Literal, Optional
 
 
 class DataCoordinates(BaseModel):
@@ -9,10 +9,10 @@ class DataCoordinates(BaseModel):
 
 class DataSobreeixidor(BaseModel):
     component: str
-    descripcio: str
+    descripcio: Optional[str]
     latitud: float
     longitud: float
     clase: str
     dayly_threshold: int
-    data_darrera_lectura: str
+    data_darrera_lectura: Optional[str]
     lectura: float

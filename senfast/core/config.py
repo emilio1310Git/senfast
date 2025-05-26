@@ -76,10 +76,7 @@ class Settings(BaseSettings):
         service = values.get("DB_NAME", "")
         return f"oracle+cx_oracle://{user}:{password}@{host}:{port}/?service_name={service}"
     # OTROS VELORES PROPIOS DE LOS ENDPOINTS
-    # PATH_ICONES_SOBREEIXIDORS: str = Field(
-    #     default=os.path.join(os.getcwd(), "senfast", "static", "icons_sobreeixidors"),
-    #     json_schema_extra={"env": "PATH_ICONES_SOBREEIXIDORS"}
-    # )
+    PATH_ICONES_SOBREEIXIDORS: str = Field(default="RealDictCursor", json_schema_extra={"env": "PATH_ICONES_SOBREEIXIDORS"})
 
 @lru_cache
 def get_settings() -> Settings:

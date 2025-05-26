@@ -1,6 +1,5 @@
 from fastapi import APIRouter,Request
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
-from fastapi.openapi.utils import get_openapi
 from senfast.core.logger import logger
 from senfast.core.config import get_settings
 
@@ -24,10 +23,6 @@ async def custom_swagger_ui_html(request: Request):
     if logger:
         request_id = getattr(request.state, "request_id", None)
         logger.info(f"Request ID: {request_id} - Acceso a documentación Swagger")
-    
-    # Obtener base URL de la solicitud actual
-    # base_url = str(request.base_url).rstrip('/')
-    # Asegurar que estamos en la ruta correcta
     openapi_path = f"/senfast/{settings.API_PREFIX}/openapi.json".replace("//", "/")
     
     return get_swagger_ui_html(
@@ -43,9 +38,6 @@ async def redoc_html(request: Request):
         request_id = getattr(request.state, "request_id", None)
         logger.info(f"Request ID: {request_id} - Acceso a documentación ReDoc")
     
-    # Obtener base URL de la solicitud actual
-    # base_url = str(request.base_url).rstrip('/')
-    # Asegurar que estamos en la ruta correcta
     openapi_path = f"/senfast/{settings.API_PREFIX}/openapi.json".replace("//", "/")
     
     return get_redoc_html(
@@ -53,18 +45,6 @@ async def redoc_html(request: Request):
         title=f"{settings.APP_NAME} - API ReDoc",
     )
 
-# @router.get("/openapi.json", include_in_schema=False)
-# async def get_open_api_endpoint(request: Request):
-#     app = request.app
-#     if logger:
-#         request_id = getattr(request.state, "request_id", None)
-#         logger.info(f"Request ID: {request_id} - Solicitud de OpenAPI JSON")
-#     return get_openapi(
-#         title=settings.APP_NAME,
-#         version=settings.APP_VERSION,
-#         description=settings.APP_DESCRIPTION,
-#         routes=app.routes,
-#     )
 @router.get("/openapi.json", include_in_schema=False)
 async def get_open_api_endpoint(request: Request):
     app = request.app

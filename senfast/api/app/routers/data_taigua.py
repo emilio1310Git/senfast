@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi.responses import XMLResponse
+from fastapi.responses import Response
 from typing import Optional
 import os
 
@@ -13,6 +13,9 @@ from senfast.api.app.repositories.taigua_repository import (
 router = APIRouter(prefix="/taigua", tags=["Dades TAIGUA"])
 
 ICON_PATH = "/ruta/static/icons_taigua/"  # Ajusta la ruta según tu estructura real
+
+class XMLResponse(Response):
+    media_type = "application/xml"
 
 # --- Sensores de presión ---
 @router.get("/kml_sensors_pressio", response_class=XMLResponse)
