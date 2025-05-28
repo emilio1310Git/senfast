@@ -1,6 +1,8 @@
 FROM python:3.12-slim AS builder
 
 # Establecer variables de entorno
+# ENV ENVIRONMENT=production
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=off \
@@ -40,6 +42,7 @@ ENV PATH="/venv/bin:$PATH" \
     API_PORT=8000 \
     LOG_LEVEL=INFO \
     MAX_WORKERS=4
+
 
 
 # Instalar runtime dependencies

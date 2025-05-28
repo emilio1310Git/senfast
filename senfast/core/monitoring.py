@@ -48,8 +48,9 @@ def setup_logging():
         logger.handlers.clear()    
     
     # Nivel de logging basado en entorno
-    logger.setLevel(getattr(global_settings, "LOG_LEVEL", "INFO"))
-    
+    # logger.setLevel(getattr(global_settings, "LOG_LEVEL", "INFO"))
+    level = getattr(global_settings, "LOG_LEVEL", "INFO").upper()
+    logger.setLevel(level)
     # Formato estructurado para mejor análisis
     formatter = logging.Formatter(
         '%(asctime)s|%(levelname)s|%(name)s|%(module)s|%(funcName)s|%(message)s'

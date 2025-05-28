@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     APP_DESCRIPTION: str = Field(..., json_schema_extra={"env": "APP_DESCRIPTION"})
     ENVIRONMENT: str = Field(default="development", json_schema_extra={"env": "ENVIRONMENT"})
     DEBUG: bool = Field(default=False, json_schema_extra={"env": "DEBUG"}) 
-    LOG_LEVEL: str = Field(default="INFO", json_schema_extra={"env": "LOG_LEVEL"})
+    LOG_LEVEL: str = Field(default="info", json_schema_extra={"env": "LOG_LEVEL"})
 
     # Configuración API
     API_HOST: str = Field(default="localhost", json_schema_extra={"env": "API_HOST"})

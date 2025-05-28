@@ -3,6 +3,7 @@ import re
 import time
 from contextlib import contextmanager
 from typing import Iterator, Optional
+import platform
 import oracledb
 from fastapi import HTTPException, status
 
@@ -21,10 +22,10 @@ POOL = None
 if oracledb.is_thin_mode():
     lib_dir = os.getenv("ORACLE_CLIENT_LIB")
     if not lib_dir:
-        if settings.ENVIRONMENT == "production":
-            lib_dir = "/opt/oracle/instantclient"
-        else:
+        if platform.system() == "Windows":
             lib_dir = r"C:\oracle\instantclient"
+        else:
+            lib_dir = "/opt/oracle/instantclient"
     oracledb.init_oracle_client(lib_dir=lib_dir)
 
 def get_connection_pool():
