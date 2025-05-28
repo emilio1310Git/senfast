@@ -1,0 +1,41 @@
+nombre_schema: "kmlSentiloComptadors"
+nombre_doc: "Dades SENTILO Terrassa - Comptadors d'Aigua -"
+desc_doc: "KML amb la informació dels sensors públics de la ciutat de Terrassa amb dades referents a comptadors d'aigua"
+nombre_archivo_base: "TAIGUA_Comptadors"
+
+campos:
+  serial_number: "string"
+  comptador: "string"
+  contracte: "string"
+  adreca: "string"
+  ultima_lectura: "double"
+  ultim_consum: "double"
+  data_ultima_lectura: "string"
+  total_lectures: "int"
+  numero_lectures: "string"
+  classificacio: "int"
+  latitud: "double"
+  longitud: "double"
+
+campo_clasificacion: "classificacio"
+estilo_por_defecto: "sentiloComptadorsAiguaTerrassa_0"
+
+mapeo_estilos:
+  "0": "sentiloComptadorsAiguaTerrassa_0"
+  "1": "sentiloComptadorsAiguaTerrassa_1"
+  "2": "sentiloComptadorsAiguaTerrassa_2"
+  "3": "sentiloComptadorsAiguaTerrassa_3"
+
+estilos:
+  - id: "sentiloComptadorsAiguaTerrassa_0"
+    icon_path: "taigua/icona_comptador_0.svg"
+  - id: "sentiloComptadorsAiguaTerrassa_1"
+    icon_path: "taigua/icona_comptador_1.svg"
+  - id: "sentiloComptadorsAiguaTerrassa_2"
+    icon_path: "taigua/icona_comptador_2.svg"
+  - id: "sentiloComptadorsAiguaTerrassa_3"
+    icon_path: "taigua/icona_comptador_3.svg"
+
+campos_descripcion:
+  - "serial_number"
+  - "adreca"

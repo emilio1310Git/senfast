@@ -1,0 +1,30 @@
+nombre_schema: "kmlTAIGUA_Gateways"
+nombre_doc: "Dades SENTILO Terrassa - Gateways -"
+desc_doc: "KML amb la informació relativa als gateways de TAIGUA"
+nombre_archivo_base: "TAIGUA_Gateways"
+
+campos:
+  id_gateway: "string"
+  nom: "string"
+  latitud: "double"
+  longitud: "double"
+  data_ultim_event: "string"
+  connectat: "string"
+
+campo_clasificacion: "connectat"
+estilo_por_defecto: "Fora de servei"
+
+mapeo_estilos:
+  "S": "En servei"
+  "N": "Fora de servei"
+
+estilos:
+  - id: "En servei"
+    icon_path: "taigua/icona_gateway_en_servei.svg"
+  - id: "Fora de servei"
+    icon_path: "taigua/icona_gateway_fora_servei.svg"
+
+campos_descripcion:
+  - "id_gateway"
+  - "nom"
+  - "data_ultim_event"

@@ -15,6 +15,7 @@ python-dotenv==1.0.1
 logging-plus==1.2.0
 tenacity==8.2.3
 psutil==7.0.0
+PyYAML==6.0.2
 
 # Monitorización
 prometheus-client>=0.12.0,<0.13.0

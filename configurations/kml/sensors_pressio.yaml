@@ -1,0 +1,50 @@
+nombre_schema: "kmlTAIGUA_SensorsPressio"
+nombre_doc: "Dades SENTILO Terrassa - Sensors de pressió -"
+desc_doc: "KML amb la informació relativa als sensors de pressió de TAIGUA"
+nombre_archivo_base: "TAIGUA_SensorsPressio"
+
+campos:
+  serial_number: "string"
+  proveidor: "string"
+  id_ubicacio: "string"
+  ubicacio: "string"
+  latitud: "double"
+  longitud: "double"
+  node: "string"
+  temps_nivell: "string"
+  bateria_nivell: "double"
+  temps_pressio: "string"
+  pressio: "double"
+  color: "string"
+  data_ini_ubicacio: "string"
+  tipus: "string"
+
+campo_clasificacion: "color"
+estilo_por_defecto: "Sense Dades"
+
+mapeo_estilos:
+  "VERD": "En funcionament"
+  "GROC": "Dades més antigues de 2 dies"
+  "TARONJA": "Amb dades negatives"
+  "VERMELL": "Menys 20% bateria"
+  "GRIS": "Ubicació"
+
+estilos:
+  - id: "En funcionament"
+    icon_path: "taigua/icona_sensor_pressio_verd.svg"
+  - id: "Dades més antigues de 2 dies"
+    icon_path: "taigua/icona_sensor_pressio_groc.svg"
+  - id: "Amb dades negatives"
+    icon_path: "taigua/icona_sensor_pressio_taronja.svg"
+  - id: "Menys 20% bateria"
+    icon_path: "taigua/icona_sensor_pressio_vermell.svg"
+  - id: "Ubicació"
+    icon_path: "taigua/icona_sensor_pressio_ubicacio.svg"
+  - id: "Sense Dades"
+    icon_path: "taigua/icona_sensor_pressio_gris.svg"
+
+campos_descripcion:
+  - "serial_number"
+  - "proveidor"
+  - "bateria_nivell"
+  - "pressio"

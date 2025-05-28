@@ -1,0 +1,40 @@
+nombre_schema: "kmlTERRASSA_Sobreeixidors"
+nombre_doc: "Dades SENTILO Terrassa - Sobreeixidors -"
+desc_doc: "KML amb la informació relativa als sobreeixidors instal·lats a la ciutat"
+nombre_archivo_base: "Sobreeixidors"
+
+campos:
+  component: "string"
+  descripcio: "string"
+  latitud: "double"
+  longitud: "double"
+  clase: "string"
+  dayly_threshold: "integer"
+  data_darrera_lectura: "string"
+  lectura: "double"
+
+campo_clasificacion: "clase"
+estilo_por_defecto: "Sense dades"
+
+mapeo_estilos:
+  "VERD": "Sense activacions"
+  "VERMELL": "Amb activacions"
+
+estilos:
+  - id: "Sense activacions"
+    icon_path: "sobreeixidors/icon_sobreeixidor_poi_verd.svg"
+    label_scale: "0.0"
+    icon_scale: "1.0"
+  - id: "Amb activacions"
+    icon_path: "sobreeixidors/icon_sobreeixidor_poi_vermell.svg"
+    label_scale: "0.0"
+    icon_scale: "1.0"
+  - id: "Sense dades"
+    icon_path: "sobreeixidors/icon_sobreeixidor_poi_gris.svg"
+    label_scale: "0.0"
+    icon_scale: "1.0"
+
+campos_descripcion:
+  - "component"
+  - "descripcio"
+  - "data_darrera_lectura"

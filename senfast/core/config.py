@@ -75,8 +75,13 @@ class Settings(BaseSettings):
         port = str(values.get("DB_PORT", 1521))
         service = values.get("DB_NAME", "")
         return f"oracle+cx_oracle://{user}:{password}@{host}:{port}/?service_name={service}"
-    # OTROS VELORES PROPIOS DE LOS ENDPOINTS
-    PATH_ICONES_SOBREEIXIDORS: str = Field(default="RealDictCursor", json_schema_extra={"env": "PATH_ICONES_SOBREEIXIDORS"})
+    # OTROS VALORES PROPIOS DE LOS ENDPOINTS
+    # Configuración para KML
+    ICONS_BASE_PATH: str = Field(default="/static/icons", json_schema_extra={"env": "ICONS_BASE_PATH"})
+    KML_CONFIG_DIR: str = Field(default="configurations/kml", json_schema_extra={"env": "KML_CONFIG_DIR"})
+    PROMETHEUS_ENABLED: bool = Field(default=True, json_schema_extra={"env": "PROMETHEUS_ENABLED"})
+    # Paths específicos para iconos (mantenemos compatibilidad) se debe borrar en el futuro
+    PATH_ICONES_SOBREEIXIDORS: str = Field(default="/static/icons/sobreeixidors/", json_schema_extra={"env": "PATH_ICONES_SOBREEIXIDORS"}) 
 
 @lru_cache
 def get_settings() -> Settings:
