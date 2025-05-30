@@ -1,6 +1,6 @@
 from typing import List, Optional
 from senfast.api.app.utils_kml.kml_config import KMLConfigManager
-from senfast.api.app.utils_kml.kml_utils_v2 import create_kml_from_config
+from senfast.api.app.utils_kml.kml_utils import create_kml_from_config
 from senfast.core.monitoring import logger
 from fastapi import HTTPException
 

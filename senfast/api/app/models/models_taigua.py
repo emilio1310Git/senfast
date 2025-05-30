@@ -3,19 +3,17 @@ from typing import Optional
 
 class DataSensorPressio(BaseModel):
     serial_number: str
-    proveidor: str
+    provider: str
     id_ubicacio: str
-    ubicacio: str
     latitud: float
     longitud: float
-    node: Optional[str] = None
     temps_nivell: Optional[str] = None
     bateria_nivell: Optional[float] = None
     temps_pressio: Optional[str] = None
     pressio: Optional[float] = None
     color: Optional[str] = None
     data_ini_ubicacio: Optional[str] = None
-    tipus: Optional[str] = None
+    adreça: Optional[str] = None
 
 class DataGateway(BaseModel):
     id_gateway: str

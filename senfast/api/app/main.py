@@ -12,7 +12,7 @@ from senfast.core.config import get_settings
 # from senfast.core.routes import router
 # from senfast.api.app.routers import health, docs, info, metrics_route, data_sobreeixidors, data_taigua
 from senfast.api.app.routers import health, docs, info, metrics_route
-from senfast.api.app.routers import data_sobreeixidors_v2, data_taigua_v2
+from senfast.api.app.routers import data_sobreeixidors, data_taigua
 from senfast.core.metrics import setup_metrics
 from fastapi import Request, HTTPException
 
@@ -144,8 +144,8 @@ def get_application() -> FastAPI:
     _app.include_router(metrics_route.router)
     # _app.include_router(data_taigua.router)
     # _app.include_router(data_sobreeixidors.router)
-    _app.include_router(data_taigua_v2.router)
-    _app.include_router(data_sobreeixidors_v2.router)    
+    _app.include_router(data_taigua.router)
+    _app.include_router(data_sobreeixidors.router)    
     # _app.include_router(router)
     # for router in [health.router, metrics.router, docs.router, info.router, data_barris.router]:
     #     _app.include_router(router)

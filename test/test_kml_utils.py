@@ -2,7 +2,7 @@ import os
 import tempfile
 import pytest
 from types import SimpleNamespace
-from senfast.api.app.utils.kml_utils import create_kml_general
+from senfast.api.app.utils_kml.kml_utils import create_kml_general
 
 @pytest.fixture
 def datos_mock():

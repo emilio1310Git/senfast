@@ -4,7 +4,7 @@ from typing import Dict, List, Any, Callable, Optional
 from pathlib import Path
 from pydantic import BaseModel, Field
 from senfast.core.config import get_settings
-
+from senfast.core.monitoring import logger
 class StyleConfig(BaseModel):
     """Configuración de un estilo individual"""
     id: str
@@ -39,9 +39,12 @@ class KMLEndpointConfig(BaseModel):
 class KMLConfigManager:
     """Gestor de configuraciones KML"""
     
-    def __init__(self, config_dir: str = "config/kml"):
+    def __init__(self, config_dir: str = "configurations/kml"):
         self.settings = get_settings()
-        self.config_dir = Path(config_dir)
+        if not self.settings.KML_CONFIG_DIR:
+            self.config_dir = Path(config_dir)
+            logger.debug(f"KML_CONFIG_DIR no está configurado, usando el por defecto {config_dir}")
+        self.config_dir = Path(self.settings.KML_CONFIG_DIR)
         self.config_cache: Dict[str, KMLEndpointConfig] = {}
     
     def load_config(self, endpoint_name: str) -> KMLEndpointConfig:

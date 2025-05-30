@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from types import SimpleNamespace
 from senfast.api.app.utils_kml.kml_config import KMLConfigManager, KMLEndpointConfig
-from senfast.api.app.utils_kml.kml_utils_v2 import create_kml_from_config
+from senfast.api.app.utils_kml.kml_utils import create_kml_from_config
 
 @pytest.fixture
 def temp_config_dir():

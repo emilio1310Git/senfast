@@ -1,5 +1,5 @@
 from types import SimpleNamespace
-def test_kml_sobreeixidors_endpoint_v2(client, monkeypatch):
+def test_kml_sobreeixidors_endpoint(client, monkeypatch):
     """Test del endpoint KML refactorizado"""
     # Mock de los datos
     mock_data = [
